@@ -50,6 +50,8 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     private static final InternalLogger logger =
             InternalLoggerFactory.getInstance(AbstractNioChannel.class);
 
+    private static final InternalLogger LOGGER = logger;
+
     private final SelectableChannel ch;
     protected final int readInterestOp;
     volatile SelectionKey selectionKey;
@@ -82,6 +84,10 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         this.readInterestOp = readInterestOp;
         try {
             ch.configureBlocking(false);
+            LOGGER.info(
+                    "oops, AbstractNioChannel(Channel parent, SelectableChannel ch, int readInterestOp), SelectableChannel.configureBlocking(false), parent={}, ch={}, readInterestOp={}",
+                    parent, ch, readInterestOp
+            );
         } catch (IOException e) {
             try {
                 ch.close();
@@ -378,6 +384,10 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         for (;;) {
             try {
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
+                LOGGER.info(
+                        "oops, doRegister, JDK's SelectableChannel registered to selector, channel={}, eventLoop={}, selector={}, ops=0",
+                        javaChannel(), eventLoop(), eventLoop().unwrappedSelector()
+                );
                 return;
             } catch (CancelledKeyException e) {
                 if (!selected) {

@@ -43,6 +43,8 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractChannel.class);
 
+    private static final InternalLogger LOGGER = logger;
+
     private final Channel parent;
     private final ChannelId id;
     private final Unsafe unsafe;
@@ -72,6 +74,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
         id = newId();
         unsafe = newUnsafe();
         pipeline = newChannelPipeline();
+        LOGGER.info(
+                "oops, AbstractChannel(Channel parent), pipeline created, pipeline={}",
+                pipeline
+        );
     }
 
     /**
@@ -244,6 +250,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
     @Override
     public ChannelFuture bind(SocketAddress localAddress, ChannelPromise promise) {
+        LOGGER.info("oops, bind(SocketAddress localAddress, ChannelPromise promise), calling pipeline.bind(localAddress, promise)");
         return pipeline.bind(localAddress, promise);
     }
 

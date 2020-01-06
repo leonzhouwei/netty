@@ -33,6 +33,7 @@ import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.SocketUtils;
 import io.netty.util.internal.StringUtil;
 import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -50,6 +51,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * transports such as datagram (UDP).</p>
  */
 public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C extends Channel> implements Cloneable {
+
+    private static final InternalLogger LOGGER = InternalLoggerFactory.getInstance(AbstractBootstrap.class);
 
     volatile EventLoopGroup group;
     @SuppressWarnings("deprecation")
@@ -296,6 +299,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         Channel channel = null;
         try {
             channel = channelFactory.newChannel();
+            LOGGER.info("oops, initAndRegister, netty's channel created, channel={}", channel);
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {

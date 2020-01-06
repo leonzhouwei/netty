@@ -55,6 +55,8 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     private static final InternalLogger logger =
             InternalLoggerFactory.getInstance(SingleThreadEventExecutor.class);
 
+    private static final InternalLogger LOGGER = logger;
+
     private static final int ST_NOT_STARTED = 1;
     private static final int ST_STARTED = 2;
     private static final int ST_SHUTTING_DOWN = 3;
@@ -615,6 +617,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     @Override
     public boolean inEventLoop(Thread thread) {
+        LOGGER.info("oops, inEventLoop(Thread thread), return={}, input.thread={}, this.thread={}", thread == this.thread, thread, this.thread);
         return thread == this.thread;
     }
 

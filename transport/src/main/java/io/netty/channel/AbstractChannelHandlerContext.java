@@ -56,6 +56,8 @@ import static io.netty.channel.ChannelHandlerMask.mask;
 abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, ResourceLeakHint {
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractChannelHandlerContext.class);
+    private static final InternalLogger LOGGER = logger;
+
     volatile AbstractChannelHandlerContext next;
     volatile AbstractChannelHandlerContext prev;
 
@@ -484,6 +486,10 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
 
         final AbstractChannelHandlerContext next = findContextOutbound(MASK_BIND);
         EventExecutor executor = next.executor();
+        LOGGER.info(
+                "oops, bind(final SocketAddress localAddress, final ChannelPromise promise), executor.inEventLoop={}",
+                executor.inEventLoop()
+        );
         if (executor.inEventLoop()) {
             next.invokeBind(localAddress, promise);
         } else {
@@ -498,6 +504,10 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
     }
 
     private void invokeBind(SocketAddress localAddress, ChannelPromise promise) {
+        LOGGER.info(
+                "oops, invokeBind(SocketAddress localAddress, ChannelPromise promise), invokeHandler={}",
+                invokeHandler()
+        );
         if (invokeHandler()) {
             try {
                 ((ChannelOutboundHandler) handler()).bind(this, localAddress, promise);

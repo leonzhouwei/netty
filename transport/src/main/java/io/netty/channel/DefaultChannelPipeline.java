@@ -47,6 +47,8 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
     static final InternalLogger logger = InternalLoggerFactory.getInstance(DefaultChannelPipeline.class);
 
+    private static final InternalLogger LOGGER = logger;
+
     private static final String HEAD_NAME = generateName0(HeadContext.class);
     private static final String TAIL_NAME = generateName0(TailContext.class);
 
@@ -1343,6 +1345,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         @Override
         public void bind(
                 ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) {
+            LOGGER.info("oops, bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise)");
             unsafe.bind(localAddress, promise);
         }
 

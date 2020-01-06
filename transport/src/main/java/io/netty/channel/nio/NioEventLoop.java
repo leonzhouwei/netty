@@ -58,6 +58,8 @@ public final class NioEventLoop extends SingleThreadEventLoop {
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(NioEventLoop.class);
 
+    private static final InternalLogger LOGGER = logger;
+
     private static final int CLEANUP_INTERVAL = 256; // XXX Hard-coded value, but won't need customization.
 
     private static final boolean DISABLE_KEY_SET_OPTIMIZATION =
@@ -177,6 +179,10 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         final Selector unwrappedSelector;
         try {
             unwrappedSelector = provider.openSelector();
+            LOGGER.info(
+                    "oops, openSelector, unwrappedSelector={}, parent={}, inEventLoop={}",
+                    unwrappedSelector, parent(), inEventLoop()
+            );
         } catch (IOException e) {
             throw new ChannelException("failed to open a new selector", e);
         }
