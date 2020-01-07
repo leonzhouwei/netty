@@ -617,7 +617,6 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     @Override
     public boolean inEventLoop(Thread thread) {
-        LOGGER.info("oops, inEventLoop(Thread thread), return={}, input.thread={}, this.thread={}", thread == this.thread, thread, this.thread);
         return thread == this.thread;
     }
 

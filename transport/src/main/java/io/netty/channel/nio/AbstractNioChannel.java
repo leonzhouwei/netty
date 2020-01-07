@@ -85,8 +85,8 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         try {
             ch.configureBlocking(false);
             LOGGER.info(
-                    "oops, AbstractNioChannel(Channel parent, SelectableChannel ch, int readInterestOp), SelectableChannel.configureBlocking(false), parent={}, ch={}, readInterestOp={}",
-                    parent, ch, readInterestOp
+                    "oops, AbstractNioChannel(Channel, SelectableChannel, int), configureBlocking, op={}",
+                    readInterestOp
             );
         } catch (IOException e) {
             try {
@@ -385,7 +385,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
             try {
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
                 LOGGER.info(
-                        "oops, doRegister, JDK's SelectableChannel registered to selector, channel={}, eventLoop={}, selector={}, ops=0",
+                        "oops, doRegister, channel registered, channel={}, eventLoop={}, selector={}, ops=0",
                         javaChannel(), eventLoop(), eventLoop().unwrappedSelector()
                 );
                 return;

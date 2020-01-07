@@ -250,7 +250,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
     @Override
     public ChannelFuture bind(SocketAddress localAddress, ChannelPromise promise) {
-        LOGGER.info("oops, bind(SocketAddress localAddress, ChannelPromise promise), calling pipeline.bind(localAddress, promise)");
+        LOGGER.info("oops, bind(SocketAddress, ChannelPromise), calling pipeline.bind()");
         return pipeline.bind(localAddress, promise);
     }
 
@@ -554,6 +554,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             }
 
             boolean wasActive = isActive();
+            LOGGER.info("oops, bind(final SocketAddress, final ChannelPromise), wasActive={}", wasActive);
             try {
                 doBind(localAddress);
             } catch (Throwable t) {
