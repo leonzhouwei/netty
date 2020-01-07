@@ -175,6 +175,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         super(parent);
         this.addTaskWakesUp = addTaskWakesUp;
         this.maxPendingTasks = DEFAULT_MAX_PENDING_EXECUTOR_TASKS;
+        LOGGER.info("oops,SingleThreadEventExecutor(EventExecutorGroup,Executor,boolean,Queue,RejectedExecutionH");
         this.executor = ThreadExecutorMap.apply(executor, this);
         this.taskQueue = ObjectUtil.checkNotNull(taskQueue, "taskQueue");
         rejectedExecutionHandler = ObjectUtil.checkNotNull(rejectedHandler, "rejectedHandler");
@@ -874,6 +875,11 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     @Override
     public void execute(Runnable task) {
+        Thread currentThread = Thread.currentThread();
+        LOGGER.info("oops, execute(Runnable),thread={},task={}",
+                currentThread.getName() + "||" + currentThread,
+                task
+        );
         if (task == null) {
             throw new NullPointerException("task");
         }
@@ -997,6 +1003,10 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     private static final long SCHEDULE_PURGE_INTERVAL = TimeUnit.SECONDS.toNanos(1);
 
     private void startThread() {
+        Thread currentThread = Thread.currentThread();
+        LOGGER.info("oops, startThread(),thread={}",
+                currentThread.getName() + "||" + currentThread
+        );
         if (state == ST_NOT_STARTED) {
             if (STATE_UPDATER.compareAndSet(this, ST_NOT_STARTED, ST_STARTED)) {
                 boolean success = false;

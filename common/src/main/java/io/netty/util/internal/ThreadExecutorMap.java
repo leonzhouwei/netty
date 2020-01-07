@@ -17,6 +17,8 @@ package io.netty.util.internal;
 
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.FastThreadLocal;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
@@ -25,6 +27,8 @@ import java.util.concurrent.ThreadFactory;
  * Allow to retrieve the {@link EventExecutor} for the calling {@link Thread}.
  */
 public final class ThreadExecutorMap {
+
+    private static final InternalLogger LOGGER = InternalLoggerFactory.getInstance(ThreadExecutorMap.class);
 
     private static final FastThreadLocal<EventExecutor> mappings = new FastThreadLocal<EventExecutor>();
 
@@ -54,6 +58,11 @@ public final class ThreadExecutorMap {
         return new Executor() {
             @Override
             public void execute(final Runnable command) {
+                Thread currentThread = Thread.currentThread();
+                LOGGER.info("oops, apply(Executor,EventExecutor),thread={},eventExecutor={}",
+                        currentThread.getName() + "||" + currentThread,
+                        eventExecutor
+                );
                 executor.execute(apply(command, eventExecutor));
             }
         };
@@ -64,6 +73,11 @@ public final class ThreadExecutorMap {
      * when called from within the {@link Runnable} during execution.
      */
     public static Runnable apply(final Runnable command, final EventExecutor eventExecutor) {
+        Thread currentThread = Thread.currentThread();
+        LOGGER.info("oops, apply(Runnable,EventExecutor),thread={},eventExecutor={}",
+                currentThread.getName() + "||" + currentThread,
+                eventExecutor
+        );
         ObjectUtil.checkNotNull(command, "command");
         ObjectUtil.checkNotNull(eventExecutor, "eventExecutor");
         return new Runnable() {

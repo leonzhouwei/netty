@@ -984,6 +984,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
     @Override
     public final ChannelFuture bind(SocketAddress localAddress, ChannelPromise promise) {
+        LOGGER.info("oops, bind(SocketAddress, localAddress, ChannelPromise promise)");
         return tail.bind(localAddress, promise);
     }
 
@@ -1258,6 +1259,8 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     // A special catch-all handler that handles both bytes and messages.
     final class TailContext extends AbstractChannelHandlerContext implements ChannelInboundHandler {
 
+        private final InternalLogger LOGGER = InternalLoggerFactory.getInstance(TailContext.class);
+
         TailContext(DefaultChannelPipeline pipeline) {
             super(pipeline, null, TAIL_NAME, TailContext.class);
             setAddComplete();
@@ -1269,7 +1272,9 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         }
 
         @Override
-        public void channelRegistered(ChannelHandlerContext ctx) { }
+        public void channelRegistered(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, channelRegistered(ChannelHandlerContext)");
+        }
 
         @Override
         public void channelUnregistered(ChannelHandlerContext ctx) { }
@@ -1290,7 +1295,9 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         }
 
         @Override
-        public void handlerAdded(ChannelHandlerContext ctx) { }
+        public void handlerAdded(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, handlerAdded(ChannelHandlerContext)");
+        }
 
         @Override
         public void handlerRemoved(ChannelHandlerContext ctx) { }
@@ -1319,6 +1326,8 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     final class HeadContext extends AbstractChannelHandlerContext
             implements ChannelOutboundHandler, ChannelInboundHandler {
 
+        private final InternalLogger LOGGER = InternalLoggerFactory.getInstance(HeadContext.class);
+
         private final Unsafe unsafe;
 
         HeadContext(DefaultChannelPipeline pipeline) {
@@ -1334,6 +1343,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void handlerAdded(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, handlerAdded(ChannelHandlerContext)");
             // NOOP
         }
 
@@ -1394,6 +1404,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void channelRegistered(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, channelRegistered(ChannelHandlerContext)");
             invokeHandlerAddedIfNeeded();
             ctx.fireChannelRegistered();
         }
