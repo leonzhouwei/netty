@@ -29,11 +29,15 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 /**
  * Echoes back any received data from a client.
  */
 public final class EchoServer {
+
+    private static final InternalLogger LOGGER = InternalLoggerFactory.getInstance(EchoServer.class);
 
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
@@ -49,8 +53,12 @@ public final class EchoServer {
         }
 
         // Configure the server.
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup bossGroup = new NioEventLoopGroup(2);
+        LOGGER.info("oops, bossGroup created, bossGroup={}", bossGroup);
+        System.out.println();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        LOGGER.info("oops, workerGroup created, workerGroup={}", workerGroup);
+        System.out.println();
         final EchoServerHandler serverHandler = new EchoServerHandler();
         try {
             ServerBootstrap b = new ServerBootstrap();

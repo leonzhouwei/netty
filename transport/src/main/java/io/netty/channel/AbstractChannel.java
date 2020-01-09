@@ -471,6 +471,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             }
 
             AbstractChannel.this.eventLoop = eventLoop;
+            LOGGER.info(
+                    "oops, channel's eventLoop set ok, channel={}, eventLoop={}, eventLoop.parent()={}",
+                    this, eventLoop, eventLoop.parent()
+            );
 
             if (eventLoop.inEventLoop()) {
                 register0(promise);
@@ -563,10 +567,12 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 return;
             }
 
+            LOGGER.info("oops, bind(final SocketAddress, final ChannelPromise), isActive={}", isActive());
             if (!wasActive && isActive()) {
                 invokeLater(new Runnable() {
                     @Override
                     public void run() {
+                        LOGGER.info("oops, from AbstractChannel#bind(SocketAddress, ChannelPromise)");
                         pipeline.fireChannelActive();
                     }
                 });
