@@ -1384,6 +1384,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void read(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, read(ChannelHandlerContext)");
             unsafe.beginRead();
         }
 
@@ -1421,6 +1422,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
+            LOGGER.info("oops, channelActive(ChannelHandlerContext)");
             ctx.fireChannelActive();
 
             readIfIsAutoRead();
@@ -1444,6 +1446,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         }
 
         private void readIfIsAutoRead() {
+            LOGGER.info("oops, readIfIsAutoRead()");
             if (channel.config().isAutoRead()) {
                 channel.read();
             }

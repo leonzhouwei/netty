@@ -381,6 +381,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     @Override
     protected void doRegister() throws Exception {
         boolean selected = false;
+        // TODO: 这里为什么要用循环？？？
         for (;;) {
             try {
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
@@ -421,6 +422,12 @@ public abstract class AbstractNioChannel extends AbstractChannel {
 
         final int interestOps = selectionKey.interestOps();
         if ((interestOps & readInterestOp) == 0) {
+            LOGGER.info("oops, doBeginRead(), interestOps={}, this={}", interestOps, this);
+            LOGGER.info("oops, doBeginRead(), readInterestOp={}, this={}", readInterestOp, this);
+            LOGGER.info("oops, doBeginRead(), selectionKey.interestOps({}), this={}",
+                    interestOps | readInterestOp,
+                    this
+            );
             selectionKey.interestOps(interestOps | readInterestOp);
         }
     }

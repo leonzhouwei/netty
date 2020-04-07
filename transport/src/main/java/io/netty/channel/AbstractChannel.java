@@ -472,7 +472,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
             AbstractChannel.this.eventLoop = eventLoop;
             LOGGER.info(
-                    "oops, channel's eventLoop set ok, channel={}, eventLoop={}, eventLoop.parent()={}",
+                    "oops, channel's eventLoop setting ok, channel={}, eventLoop={}, eventLoop.parent()={}",
                     this, eventLoop, eventLoop.parent()
             );
 
