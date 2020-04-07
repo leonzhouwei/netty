@@ -15,13 +15,7 @@
  */
 package io.netty.channel.nio;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
-import io.netty.channel.EventLoop;
-import io.netty.channel.EventLoopException;
-import io.netty.channel.EventLoopTaskQueueFactory;
-import io.netty.channel.SelectStrategy;
-import io.netty.channel.SingleThreadEventLoop;
+import io.netty.channel.*;
 import io.netty.util.IntSupplier;
 import io.netty.util.concurrent.RejectedExecutionHandler;
 import io.netty.util.internal.PlatformDependent;
@@ -554,6 +548,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKeys() {
+        LOGGER.info("oops, processSelectedKeys()");
         if (selectedKeys != null) {
             processSelectedKeysOptimized();
         } else {
@@ -629,6 +624,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKeysOptimized() {
+        LOGGER.info("oops, processSelectedKeysOptimized()");
         for (int i = 0; i < selectedKeys.size; ++i) {
             final SelectionKey k = selectedKeys.keys[i];
             // null out entry in the array to allow to have it GC'ed once the Channel close
@@ -657,7 +653,9 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKey(SelectionKey k, AbstractNioChannel ch) {
+        LOGGER.info("oops, processSelectedKey(SelectionKey, AbstractNioChannel)");
         final AbstractNioChannel.NioUnsafe unsafe = ch.unsafe();
+        LOGGER.info("oops, processSelectedKey(SelectionKey, AbstractNioChannel), unsafe={}", unsafe);
         if (!k.isValid()) {
             final EventLoop eventLoop;
             try {
@@ -703,6 +701,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             // Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead
             // to a spin loop
             if ((readyOps & (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) {
+                LOGGER.info("oops, processSelectedKey(SelectionKey, AbstractNioChannel), unsafe.read()");
                 unsafe.read();
             }
         } catch (CancelledKeyException ignored) {

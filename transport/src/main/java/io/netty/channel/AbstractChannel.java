@@ -74,8 +74,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
         id = newId();
         unsafe = newUnsafe();
         pipeline = newChannelPipeline();
+
         LOGGER.info(
-                "oops, AbstractChannel(Channel parent), pipeline created, pipeline={}",
+                "oops, AbstractChannel(Channel parent), unsafe={}, pipeline={}",
+                unsafe,
                 pipeline
         );
     }

@@ -169,6 +169,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     private static class ServerBootstrapAcceptor extends ChannelInboundHandlerAdapter {
 
+        private static final InternalLogger LOGGER = InternalLoggerFactory.getInstance(ServerBootstrapAcceptor.class);
+
         private final EventLoopGroup childGroup;
         private final ChannelHandler childHandler;
         private final Entry<ChannelOption<?>, Object>[] childOptions;
@@ -200,6 +202,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         @SuppressWarnings("unchecked")
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             final Channel child = (Channel) msg;
+            LOGGER.info("oops, channelRead(ChannelHandlerContext, Object), child={}", child);
 
             child.pipeline().addLast(childHandler);
 
@@ -207,6 +210,10 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             setAttributes(child, childAttrs);
 
             try {
+                LOGGER.info("oops, channelRead(ChannelHandlerContext, Object), {}, childGroup={}",
+                        "childGroup.register(child).addListener(new ChannelFutureListener() {",
+                        childGroup
+                );
                 childGroup.register(child).addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture future) throws Exception {

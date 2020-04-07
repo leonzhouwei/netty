@@ -150,6 +150,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
 
         try {
             if (ch != null) {
+                LOGGER.info("oops, doReadMessages(List<Object>), will new NioSocketChannel(this, ch)");
                 buf.add(new NioSocketChannel(this, ch));
                 return 1;
             }
